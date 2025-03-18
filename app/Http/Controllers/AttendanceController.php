@@ -17,8 +17,8 @@ class AttendanceController extends Controller
         'longitude' => 'required|numeric',
     ]);
 
-    $officeLat = env('OFFICE_LATITUDE', 6.909634);
-    $officeLon = env('OFFICE_LONGITUDE', 79.9669855);
+    $officeLat = env('OFFICE_LATITUDE', 6.6357887);
+    $officeLon = env('OFFICE_LONGITUDE', 80.7119126);
     $radius = env('RADIUS_METERS', 100);
 
     $distance = LocationHelper::getDistance(
