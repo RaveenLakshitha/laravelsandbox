@@ -28,6 +28,15 @@ class AttendanceController extends Controller
         $officeLon
     );
 
+    \Log::info('Comparing locations', [
+        'office_lat' => $officeLat,
+        'office_lon' => $officeLon,
+        'request_lat' => $request->latitude,
+        'request_lon' => $request->longitude,
+    ]);
+
+    \Log::info('Calculated Distance', ['distance' => $distance]);
+
     if ($distance > $radius) {
         \Log::info('Employee outside allowed area', ['distance' => $distance]);
         
