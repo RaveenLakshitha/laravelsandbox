@@ -30,6 +30,13 @@
 
         return new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    alert("Latitude: " + position.coords.latitude + "\nLongitude: " + position.coords.longitude);
+                },
+                function(error) {
+                    alert("Error: " + error.message);
+                },
+
                 (position) => {
                     const latitude = position.coords.latitude;
                     const longitude = position.coords.longitude;
