@@ -10,5 +10,5 @@ class Attendance extends Model
     use HasFactory;
 
     // ✅ Allow mass assignment for these fields
-    protected $fillable = ['employee_id', 'latitude', 'longitude', 'checked_in_at', 'distance'];
+    protected $fillable = ['employee_id', 'latitude', 'longitude', 'distance'];
 }
