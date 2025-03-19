@@ -20,80 +20,80 @@
 </div>
 
 <script>
-   async function getLocation() {
-    try {
-        let position = await new Promise((resolve, reject) => {
+    async function getLocation() {
+        document.getElementById('statusMessage').innerHTML = "<p class='text-warning'>⏳ Getting location...</p>";
+
+        if (!navigator.geolocation) {
+            document.getElementById('statusMessage').innerHTML = "<p class='text-danger'>❗ Geolocation is not supported by your browser.</p>";
+            return null;
+        }
+
+        return new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(
-            function(position) {
-                alert("Latitude: " + position.coords.latitude + "\nLongitude: " + position.coords.longitude);
-            },
-            function(error) {
-                alert("Error: " + error.message);
-            },
-            { enableHighAccuracy: true }
+                (position) => {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+
+                    document.getElementById('latitude').value = latitude;
+                    document.getElementById('longitude').value = longitude;
+                    document.getElementById('statusMessage').innerHTML = `<p class='text-success'>✅ Location detected: ${latitude}, ${longitude}</p>`;
+
+                    resolve({ latitude, longitude });
+                },
+                (error) => {
+                    document.getElementById('statusMessage').innerHTML = `<p class='text-danger'>❗ Error: ${error.message}</p>`;
+                    reject(error);
+                },
+                { enableHighAccuracy: true, timeout: 10000 }
             );
         });
-
-        document.getElementById('latitude').value = position.coords.latitude;
-        document.getElementById('longitude').value = position.coords.longitude;
-        document.getElementById('statusMessage').innerText = "✅ Location detected!";
-    } catch (error) {
-        console.error("Error getting location:", error);
-        document.getElementById('statusMessage').innerText = "❌ Location not detected. Please enable GPS.";
     }
-}
-
-document.addEventListener("DOMContentLoaded", getLocation);
-
 
     async function markAttendance() {
-        getLocation(); // Get location before submission
-        setTimeout(async () => { // Wait for location update
+        try {
             let employeeId = document.getElementById('employee_id').value;
-            let latitude = document.getElementById('latitude').value;
-            let longitude = document.getElementById('longitude').value;
-
             if (!employeeId) {
                 document.getElementById('statusMessage').innerHTML = "<p class='text-danger'>❗ Please enter Employee ID</p>";
                 return;
             }
 
-            if (!latitude || !longitude) {
-                document.getElementById('statusMessage').innerHTML = "<p class='text-danger'>❗ Location not detected. Try again.</p>";
-                return;
-            }
+            // Get the location and wait for it
+            const location = await getLocation();
+            if (!location) return;
 
             let postData = {
                 employee_id: employeeId,
-                latitude: latitude,
-                longitude: longitude
+                latitude: location.latitude,
+                longitude: location.longitude
             };
-            console.log(postData);
-            try {
-                let response = await fetch("{{ url('/api/attendance') }}", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json",
-                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                    },
-                    body: JSON.stringify(postData),
-                });
 
-                let responseData = await response.json();
+            console.log("📤 Sending data:", postData);
 
-                if (response.ok) {
-                    document.getElementById('statusMessage').innerHTML = `<p class='text-success'>✅ ${responseData.message}</p>`;
-                } else {
-                    document.getElementById('statusMessage').innerHTML = `<p class='text-danger'>❌ ${responseData.message}</p>`;
-                }
-            } catch (error) {
-                console.error("Error sending attendance:", error);
-                document.getElementById('statusMessage').innerHTML = "<p class='text-danger'>❌ Error submitting attendance. Try again.</p>";
+            let response = await fetch("{{ url('/api/attendance') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                body: JSON.stringify(postData),
+            });
+
+            let responseData = await response.json();
+
+            if (response.ok) {
+                document.getElementById('statusMessage').innerHTML = `<p class='text-success'>✅ ${responseData.message}</p>`;
+            } else {
+                document.getElementById('statusMessage').innerHTML = `<p class='text-danger'>❌ ${responseData.message}</p>`;
             }
-        }, 2000);
+        } catch (error) {
+            console.error("❌ Error submitting attendance:", error);
+            document.getElementById('statusMessage').innerHTML = "<p class='text-danger'>❌ Error submitting attendance. Try again.</p>";
+        }
     }
 
+    // Auto-fetch location when the page loads
     document.addEventListener("DOMContentLoaded", getLocation);
 </script>
+
 @endsection
