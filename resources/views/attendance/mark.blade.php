@@ -78,15 +78,15 @@
 
             let responseData = await response.json();
             
-            console.log(response.data);
-            console.log(responseData.data);
+            console.log(response.distance);
+            console.log(responseData.distance);
 
             if (response.ok) {
                 document.getElementById('statusMessage').innerHTML = `<p class='text-success'>✅ ${responseData.message}</p>`;
                 document.getElementById('distance').innerHTML = `<p class='text-success'>✅ ${responseData.data.distance}</p>`;
             } else {
                 document.getElementById('statusMessage').innerHTML = `<p class='text-danger'>❌ ${responseData.message}</p>`;
-                document.getElementById('distance').innerHTML = `<p class='text-danger'>❌ ${responseData.data.distance}</p>`;
+                document.getElementById('distance').innerHTML = `<p class='text-danger'>❌ ${responseData.distance}</p>`;
             }
         } catch (error) {
             console.error("❌ Error submitting attendance:", error);

@@ -49,7 +49,8 @@ class AttendanceController extends Controller
         
         return response()->json([
             'error' => true,
-            'message' => 'You are outside the allowed attendance area.'
+            'message' => 'You are outside the allowed attendance area.',
+            'distance' => $distance,
         ], 403);
     }
 
