@@ -20,23 +20,25 @@
 </div>
 
 <script>
-    function getLocation() {
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(
-                function(position) {
-                    document.getElementById('latitude').value = position.coords.latitude;
-                    document.getElementById('longitude').value = position.coords.longitude;
-                },
-                function(error) {
-                    console.error("Error getting location:", error);
-                    alert("Please allow location access in your browser.");
-                },
-                { enableHighAccuracy: true, timeout: 10000 }
-            );
-        } else {
-            alert("Geolocation is not supported by your browser.");
-        }
+    async function getLocation() {
+    try {
+        let position = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject, {
+                enableHighAccuracy: true,
+                timeout: 10000
+            });
+        });
+
+        document.getElementById('latitude').value = position.coords.latitude;
+        document.getElementById('longitude').value = position.coords.longitude;
+    } catch (error) {
+        console.error("Error getting location:", error);
+        document.getElementById('statusMessage').innerHTML = "<p class='text-danger'>❌ Location not detected. Please allow access.</p>";
     }
+}
+
+document.addEventListener("DOMContentLoaded", getLocation);
+
 
     async function markAttendance() {
         getLocation(); // Get location before submission
@@ -60,7 +62,7 @@
                 latitude: latitude,
                 longitude: longitude
             };
-
+            console.log(postData);
             try {
                 let response = await fetch("{{ url('/api/attendance') }}", {
                     method: "POST",
