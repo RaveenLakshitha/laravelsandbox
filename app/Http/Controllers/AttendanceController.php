@@ -5,10 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
 use App\Helpers\LocationHelper;
+use App\Models\Setting;
+
 class AttendanceController extends Controller
 {
     public function store(Request $request)
 {
+    $officeLat = Setting::getValue('office_latitude');
+    $officeLon = Setting::getValue('office_longitude');
+
     \Log::info('Attendance request received', $request->all()); // Log request
 
     $request->validate([
@@ -19,8 +24,8 @@ class AttendanceController extends Controller
 
     // $officeLat = env('OFFICE_LATITUDE', 5.9998208);
     // $officeLon = env('OFFICE_LONGITUDE', 80.2619392);
-    $officeLat = env('OFFICE_LATITUDE', 6.6357887);
-    $officeLon = env('OFFICE_LONGITUDE', 80.7119126);
+    // $officeLat = env('OFFICE_LATITUDE', 6.6357887);
+    // $officeLon = env('OFFICE_LONGITUDE', 80.7119126);
     $radius = env('RADIUS_METERS', 100);
 
     $distance = LocationHelper::getDistance(
