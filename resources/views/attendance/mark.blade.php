@@ -44,7 +44,7 @@
                     document.getElementById('statusMessage').innerHTML = `<p class='text-danger'>❗ Error: ${error.message}</p>`;
                     reject(error);
                 },
-                { enableHighAccuracy: true, timeout: 10000 }
+                { enableHighAccuracy: true, timeout: 100000 }
             );
         });
     }
