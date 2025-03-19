@@ -66,8 +66,6 @@
                 longitude: location.longitude
             };
 
-            console.log("📤 Sending data:", postData);
-
             let response = await fetch("{{ url('/api/attendance') }}", {
                 method: "POST",
                 headers: {
@@ -80,8 +78,8 @@
 
             let responseData = await response.json();
             
-            console.log(responseData);
-            console.log(responseData.distance);
+            console.log(response.data);
+            console.log(responseData.data);
 
             if (response.ok) {
                 document.getElementById('statusMessage').innerHTML = `<p class='text-success'>✅ ${responseData.message}</p>`;
