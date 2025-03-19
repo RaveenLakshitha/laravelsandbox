@@ -23,11 +23,15 @@
    async function getLocation() {
     try {
         let position = await new Promise((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(resolve, reject, {
-                enableHighAccuracy: true, // Force GPS usage
-                timeout: 10000, // Prevent long waits
-                maximumAge: 0 // No cached location
-            });
+            navigator.geolocation.getCurrentPosition(
+            function(position) {
+                alert("Latitude: " + position.coords.latitude + "\nLongitude: " + position.coords.longitude);
+            },
+            function(error) {
+                alert("Error: " + error.message);
+            },
+            { enableHighAccuracy: true }
+            );
         });
 
         document.getElementById('latitude').value = position.coords.latitude;
