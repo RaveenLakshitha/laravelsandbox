@@ -57,6 +57,7 @@ class AttendanceController extends Controller
         'employee_id' => $request->employee_id,
         'latitude' => $request->latitude,
         'longitude' => $request->longitude,
+        'distance' => $distance,
     ]);
 
     \Log::info('Attendance recorded successfully', $attendance->toArray());

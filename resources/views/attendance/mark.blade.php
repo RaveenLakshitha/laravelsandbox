@@ -15,6 +15,7 @@
     </form>
 
     <div id="statusMessage" class="mt-3"></div>
+    <div id="distance" class="mt-3"></div>
 </div>
 
 <script>
@@ -81,6 +82,7 @@
 
             if (response.ok) {
                 document.getElementById('statusMessage').innerHTML = `<p class='text-success'>✅ ${responseData.message}</p>`;
+                document.getElementById('distance').innerHTML = `<p class='text-success'>✅ ${responseData.data.distance}</p>`;
             } else {
                 document.getElementById('statusMessage').innerHTML = `<p class='text-danger'>❌ ${responseData.message}</p>`;
             }
