@@ -79,7 +79,7 @@
             });
 
             let responseData = await response.json();
-
+            console.log(responseData);
             if (response.ok) {
                 document.getElementById('statusMessage').innerHTML = `<p class='text-success'>✅ ${responseData.message}</p>`;
                 document.getElementById('distance').innerHTML = `<p class='text-success'>✅ ${responseData.data.distance}</p>`;
