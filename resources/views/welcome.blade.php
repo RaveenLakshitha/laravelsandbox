@@ -25,8 +25,7 @@
     </style>
 </head>
 <body>
-    <h1>Welcome to Our System</h1>
-    <p>Navigate to the desired section:</p>
+    <h1>Welcome to Attendance System</h1>
 
     <a href="{{ url('/attendance/view') }}" class="btn">View Attendance</a>
     <a href="{{ url('/mark-attendance') }}" class="btn">Mark Attendance</a>

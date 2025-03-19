@@ -2,8 +2,6 @@
 
 @section('content')
 <div class="container">
-    <h2>Employee Attendance</h2>
-
     <form id="attendanceForm">
         <div class="mb-3">
             <label for="employee_id" class="form-label">Employee ID</label>
