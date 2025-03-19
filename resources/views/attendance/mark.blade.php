@@ -20,22 +20,22 @@
 </div>
 
 <script>
-    async function getLocation() {
+   async function getLocation() {
     try {
         let position = await new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(resolve, reject, {
-                enableHighAccuracy: true,
-                timeout: 10000
+                enableHighAccuracy: true, // Force GPS usage
+                timeout: 10000, // Prevent long waits
+                maximumAge: 0 // No cached location
             });
         });
 
-        console.log(position);
-        
         document.getElementById('latitude').value = position.coords.latitude;
         document.getElementById('longitude').value = position.coords.longitude;
+        document.getElementById('statusMessage').innerText = "✅ Location detected!";
     } catch (error) {
         console.error("Error getting location:", error);
-        document.getElementById('statusMessage').innerHTML = "<p class='text-danger'>❌ Location not detected. Please allow access.</p>";
+        document.getElementById('statusMessage').innerText = "❌ Location not detected. Please enable GPS.";
     }
 }
 
