@@ -21,6 +21,7 @@
         <input type="text" id="longitude" name="longitude" required value="{{ $officeLon }}">
         
         <button type="submit">Save Location</button>
+        <button type="button" onclick="history.back()">Back</button>
     </form>
 </body>
 </html>

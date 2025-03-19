@@ -12,7 +12,6 @@
                 <th>Latitude</th>
                 <th>Longitude</th>
                 <th>Checked In At</th>
-                <th>Distance</th>
             </tr>
         </thead>
         <tbody>
@@ -22,7 +21,6 @@
                 <td>{{ $attendance->latitude }}</td>
                 <td>{{ $attendance->longitude }}</td>
                 <td>{{ $attendance->checked_in_at }}</td>
-                <td>{{ $attendance->distance }}</td>
             </tr>
             @endforeach
         </tbody>
