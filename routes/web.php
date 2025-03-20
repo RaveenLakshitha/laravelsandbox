@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceAuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceViewController;
 use App\Http\Controllers\SettingsController;
@@ -19,9 +20,8 @@ Route::middleware('auth')->group(function () {
     
 });
 
-Route::get('/attendance/login', [AttendanceAuthController::class, 'showLoginForm'])->name('attendance.login');
-Route::post('/attendance/login', [AttendanceAuthController::class, 'login'])->name('attendance.login.submit');
-Route::post('/attendance/logout', [AttendanceAuthController::class, 'logout'])->name('attendance.logout');
+Route::post('/attendance/weblogin', [AttendanceAuthController::class, 'login'])->name('attendance.login.submit');
+Route::post('/attendance/weblogout', [AttendanceAuthController::class, 'logout'])->name('attendance.logout');
 
 
 Route::group(['middleware' => 'auth'], function () {
