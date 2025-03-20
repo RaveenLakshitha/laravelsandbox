@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
@@ -16,10 +17,17 @@ use App\Http\Controllers\AttendanceController;
 */
 
 // Authenticated user route (requires Sanctum auth)
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// User authentication (Sanctum token-based)
+Route::post('/attendance/login', [AttendanceAuthController::class, 'apiLogin']);
+Route::post('/attendance/logout', [AttendanceAuthController::class, 'apiLogout'])->middleware('auth:sanctum');
 
-// Attendance API routes (Public, no CSRF required)
-Route::post('/attendance', [AttendanceController::class, 'store']);
-Route::get('/attendance', [AttendanceController::class, 'index']);
+// ------------------- SECURED ATTENDANCE ROUTES -------------------
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return response()->json($request->user());
+    });
+
+    // Attendance API (only accessible after login)
+    Route::post('/attendance', [AttendanceController::class, 'store']);
+    Route::get('/attendance', [AttendanceController::class, 'index']);
+});

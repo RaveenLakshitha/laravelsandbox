@@ -68,10 +68,5 @@ class AttendanceController extends Controller
         'distance' => $distance,
     ], 201);
 }
-
-    public function index()
-    {
-        return response()->json(Attendance::latest()->get());
-    }
 }
 
